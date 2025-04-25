@@ -1,0 +1,43 @@
+#!/bin/sh
+# Daemon for qmi. Restart modem.
+# autor https://github.com/yosh781
+
+trap "logger 'Modem watchdog stopped'; exit 0" INT TERM
+
+if ! uci -q get network.wan >/dev/null; then
+    logger "Interface wan not found in network config, exiting"
+    exit 0
+fi
+
+LTEPROTO=$(uci -q get network.wan.proto)
+if [ "$LTEPROTO" != "qmi" ]; then
+    logger "WAN interface is not using qmi, exiting"
+    exit 0
+fi
+
+AUTOCONNECT=$(uci -q get network.wan.autoconnect)
+if [ "$AUTOCONNECT" != "1" ]; then
+    logger "WAN autoconnect is disabled, exiting"
+    exit 0
+fi
+
+while true; do
+    LTESTATUS=$(uqmi -d /dev/cdc-wdm0 --get-data-status 2>/dev/null | grep -c '"connected"')
+   
+    if [ -z "$LTESTATUS" ] || [ "$LTESTATUS" -eq 0 ]; then
+        logger "Modem is not connected to network, trying to reconnect..."
+        uqmi -d /dev/cdc-wdm0 --set-device-operating-mode online
+        sleep 3
+        ifdown wan && ifup wan
+        sleep 5
+        LTESTATUS=$(uqmi -d /dev/cdc-wdm0 --get-data-status 2>/dev/null | grep -c '"connected"')
+        if [ -z "$LTESTATUS" ] || [ "$LTESTATUS" -eq 0 ]; then
+            logger "Modem is reboot..."
+            echo -e "AT+CFUN=1,1\r" > /dev/ttyUSB1
+        fi
+    fi
+
+    sleep 10
+done
+
+exit 0
