@@ -1,3 +1,7 @@
+ This service is needed in a scenario where the modem hangs up and there is no connection. This can be due to ISP reconnections, due to modem overheating, 
+due to modem firmware ....
+
+
 Modem and network restart daemon for connecting with proto QMI,Openwrt. An alternative to Watchcat.
 
 Move script "modem-watchdog_qmi" to   /usr/bin/modem-watchdog_qmi  
