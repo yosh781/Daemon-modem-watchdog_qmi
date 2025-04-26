@@ -37,7 +37,7 @@ while true; do
 		sleep 20	
         fi
 		else
-logger "Modem is already connected"		
+logger "Modem is already connected"	#for only test , after - #	
     fi
 	
     sleep 10
