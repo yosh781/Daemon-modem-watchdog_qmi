@@ -36,8 +36,8 @@ while true; do
             echo -e "AT+CFUN=1,1\r" > /dev/ttyUSB1
 		sleep 20	
         fi
-		else
-logger "Modem is already connected"	#for only test , after - #	
+		#else
+#logger "Modem is already connected"	#for only test 	
     fi
 	
     sleep 10
