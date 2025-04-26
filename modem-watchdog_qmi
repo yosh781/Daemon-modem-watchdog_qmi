@@ -22,21 +22,24 @@ if [ "$AUTOCONNECT" != "1" ]; then
 fi
 
 while true; do
-    LTESTATUS=$(uqmi -d /dev/cdc-wdm0 --get-data-status 2>/dev/null | grep -c '"connected"')
+    LTESTATUS=$(uqmi -d /dev/cdc-wdm0 --get-data-status --timeout 3000 2>/dev/null | grep -c '"connected"')
    
     if [ -z "$LTESTATUS" ] || [ "$LTESTATUS" -eq 0 ]; then
         logger "Modem is not connected to network, trying to reconnect..."
         uqmi -d /dev/cdc-wdm0 --set-device-operating-mode online
-        sleep 3
-        ifdown wan && ifup wan
         sleep 5
-        LTESTATUS=$(uqmi -d /dev/cdc-wdm0 --get-data-status 2>/dev/null | grep -c '"connected"')
+        ifdown wan && ifup wan
+        sleep 10
+        LTESTATUS=$(uqmi -d /dev/cdc-wdm0 --get-data-status --timeout 3000 2>/dev/null | grep -c '"connected"')
         if [ -z "$LTESTATUS" ] || [ "$LTESTATUS" -eq 0 ]; then
             logger "Modem is reboot..."
             echo -e "AT+CFUN=1,1\r" > /dev/ttyUSB1
+		sleep 20	
         fi
+		else
+logger "Modem is already connected"		
     fi
-
+	
     sleep 10
 done
 
