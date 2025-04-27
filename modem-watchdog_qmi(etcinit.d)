@@ -1,12 +1,9 @@
 #!/bin/sh /etc/rc.common
 
 USE_PROCD=1
-START=99
-boot() {
-    
-    sleep 60
-    start
-}
+START=95
+DEPENDS="network"
+
 start_service() {
     procd_open_instance
     procd_set_param command /usr/bin/modem-watchdog_qmi
@@ -18,4 +15,9 @@ start_service() {
 
 stop_service() {
     killall modem-watchdog_qmi
+}
+
+restart() {
+    stop
+    start
 }
