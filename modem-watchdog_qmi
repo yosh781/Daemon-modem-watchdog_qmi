@@ -22,6 +22,7 @@ if [ "$AUTOCONNECT" != "1" ]; then
 fi
 
 while true; do
+    sleep 15
     LTESTATUS=$(uqmi -d /dev/cdc-wdm0 --get-data-status --timeout 3000 2>/dev/null | grep -c '"connected"')
    
     if [ -z "$LTESTATUS" ] || [ "$LTESTATUS" -eq 0 ]; then
@@ -39,7 +40,6 @@ while true; do
 #logger "Modem is already connected"	#for only test 	
     fi
 	
-    sleep 10
-done
+ done
 
 exit 0
