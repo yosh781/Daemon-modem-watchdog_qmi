@@ -4,6 +4,8 @@ due to modem firmware ....
 
 Modem and network restart daemon for connecting with proto QMI,Openwrt. An alternative to Watchcat.
 
+set up:  qmi-utils
+
 Move script "modem-watchdog_qmi" to   /usr/bin/modem-watchdog_qmi  
 
 chmod +x/usr/bin/modem-watchdog_qmi
