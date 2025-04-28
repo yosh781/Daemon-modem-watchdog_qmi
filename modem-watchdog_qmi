@@ -23,23 +23,26 @@ fi
 
 while true; do
     sleep 15
-    LTESTATUS=$(uqmi -d /dev/cdc-wdm0 --get-data-status --timeout 3000 2>/dev/null | grep -c '"connected"')
-   
-    if [ -z "$LTESTATUS" ] || [ "$LTESTATUS" -eq 0 ]; then
-        logger "Modem is not connected to network, trying to reconnect..."
-        ifup -a
-        sleep 15
+    output=$(qmicli -d /dev/cdc-wdm0 --dms-get-operating-mode 2>&1)
+    qmicli_exit_code=$?
 
-        LTESTATUS=$(uqmi -d /dev/cdc-wdm0 --get-data-status --timeout 3000 2>/dev/null | grep -c '"connected"')
-        if [ -z "$LTESTATUS" ] || [ "$LTESTATUS" -eq 0 ]; then
-            logger "Modem is reboot..."
-            echo -e "AT+CFUN=1,1\r" > /dev/ttyUSB1
-	    sleep 20	
-        fi
-		#else
-#logger "Modem is already connected"	#for only test 	
+    if echo "$output" | grep -q "offline" || [ "$qmicli_exit_code" -ne 0 ]; then
+    logger "Modem is reboot..."
+    echo -e "AT+CFUN=1,1\r" > /dev/ttyUSB2
+	sleep 30
+    exit 0
+fi
+        
+    LTESTATUS=$(uqmi -d /dev/cdc-wdm0 --get-data-status --timeout 4000 2>/dev/null | grep -c '"connected"')
+   
+    if [ "$LTESTATUS" -eq 0 ]; then
+        logger "Modem is not connected to network, trying to reconnect..."
+	uqmi -d /dev/cdc-wdm0 --set-device-operating-mode online
+        sleep 2
+        ifdown wan && ifup wan
+        sleep 10              
     fi
-	
- done
+    
+done
 
 exit 0
