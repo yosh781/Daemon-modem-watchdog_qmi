@@ -24,7 +24,6 @@ fi
 while true; do
     sleep 15
     output=$(qmicli -d /dev/cdc-wdm0 --dms-get-operating-mode 2>&1)
-	sleep 1
     qmicli_exit_code=$?
 
     if echo "$output" | grep -q "offline" || [ "$qmicli_exit_code" -ne 0 ]; then
