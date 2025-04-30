@@ -26,7 +26,7 @@ while true; do
     output=$(qmicli -d /dev/cdc-wdm0 --dms-get-operating-mode 2>&1)
     qmicli_exit_code=$?
 
-    if echo "$output" | grep -q "offline" || [ "$qmicli_exit_code" -ne 0 ]; then
+    if echo "$output" | grep -q 'offline' || [ "$qmicli_exit_code" -ne 0 ]; then
     logger "Modem is reboot..."
     echo -e "AT+CFUN=1,1\r" > /dev/ttyUSB2
 	sleep 60
