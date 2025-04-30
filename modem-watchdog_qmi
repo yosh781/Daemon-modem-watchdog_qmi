@@ -34,7 +34,7 @@ while true; do
     exit 0
 fi
         
-    LTESTATUS=$(qmicli -d /dev/cdc-wdm0 --wds-get-packet-service-status 2>/dev/null | grep -c '"connected"')
+    LTESTATUS=$(qmicli -d /dev/cdc-wdm0 --wds-get-packet-service-status 2>/dev/null | grep -c 'connected')
    
     if [ "$LTESTATUS" -eq 0 ]; then
         logger "Modem is not connected to network, trying to reconnect..."
