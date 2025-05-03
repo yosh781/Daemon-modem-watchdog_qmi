@@ -38,7 +38,7 @@ while true; do
     if [ "$LTESTATUS" -eq 0 ]; then
         logger "Modem is not connected to network, trying to reconnect..."
 	    ifdown wan && ifup wan
-        sleep 10           
+        sleep 20           
     fi    
 done
 
