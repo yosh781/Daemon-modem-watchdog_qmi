@@ -28,7 +28,7 @@ while true; do
 
     if echo "$output" | grep -q "'offline'" || [ "$qmicli_exit_code" -ne 0 ]; then
     logger "Modem is rebooting..."
-    echo -e "AT+CFUN=1,1\r" > /dev/ttyUSB2
+    echo -e "AT+CFUN=1,1\r" > /dev/ttyUSB1
 	sleep 90
 	exit 0
     fi
