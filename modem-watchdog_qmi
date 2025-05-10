@@ -15,12 +15,6 @@ if [ "$LTEPROTO" != "qmi" ]; then
     exit 0
 fi
 
-AUTOCONNECT=$(uci -q get network.wan.autoconnect)
-if [ "$AUTOCONNECT" != "1" ]; then
-    logger "WAN autoconnect is disabled, exiting"
-    exit 0
-fi
-
 while true; do
     sleep 15
     output=$(qmicli -d /dev/cdc-wdm0 --dms-get-operating-mode 2>&1)
