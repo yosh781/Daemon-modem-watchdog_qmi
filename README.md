@@ -8,12 +8,12 @@ install the packages:  qmi-utils  comgt
 
 Move script "modem-watchdog_qmi" to   /usr/bin/modem-watchdog_qmi  
 
+Place the file "modem-watchdog" in   /etc/init.d/modem-watchdog 
+
+chmod +x /etc/init.d/modem-watchdog
+
 chmod +x /usr/bin/modem-watchdog_qmi
 
-Place the file "modem-watchdog_qmi(etcinit.d)" in   /etc/init.d/modem-watchdog_qmi ,   rename to "modem-watchdog_qmi" , 
+/etc/init.d/modem-watchdog enable
 
-chmod +x /etc/init.d/modem-watchdog_qmi
-
-/etc/init.d/modem-watchdog_qmi enable
-
-/etc/init.d/modem-watchdog_qmi start
+/etc/init.d/modem-watchdog start
